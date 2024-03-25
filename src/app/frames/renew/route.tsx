@@ -110,7 +110,7 @@ export const POST = frames(async (ctx) => {
 
   return {
     image: imageUrl(
-      <div tw="flex flex-col">
+      <div tw="flex w-2/3 flex-col">
         <Heading>Renew</Heading>
         <div tw="flex items-center">
           Renewing <NameWithAvatar avatar={avatar} name={name} /> for{" "}
@@ -135,7 +135,8 @@ export const POST = frames(async (ctx) => {
           </div>
         </div>
         <div tw="mt-[50px] text-[24px] text-gray-500 flex">
-          *Approximate fees for execution from Base via relay.link
+          *Approximate fees for execution from Base via relay.link. Chain is
+          selected based on your connected address' highest balance.
         </div>
       </div>
     ),
@@ -148,7 +149,7 @@ export const POST = frames(async (ctx) => {
         target={{ pathname: "/renew-tx", query: { name, years: yearsInput } }}
         post_url={{ pathname: "/renew-tx-submitted", query: { name } }}
       >
-        Pay (auto)
+        Pay (auto-detect)
       </Button>,
     ],
   };

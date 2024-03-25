@@ -23,11 +23,9 @@ export const POST = async (
             ← Back
           </Button>
         ) : null,
-        ...(frame.buttons
-          ?.map((button) => {
-            return <Button {...button}>{button.label}</Button>;
-          })
-          .slice(0, 3) || []),
+        ...(frame.buttons?.slice(-1)?.map((button) => {
+          return <Button {...button}>{button.label}</Button>;
+        }) || []),
       ] as any,
     };
   })(req);

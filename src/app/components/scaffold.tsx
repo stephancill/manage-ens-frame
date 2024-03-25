@@ -26,10 +26,5 @@ export function Scaffold({ children: element }: { children: React.ReactNode }) {
         {element}
       </div>
     </div>
-    // <div tw="flex flex-row items-stretch w-full h-full bg-white">
-    //   <div tw="flex flex-col justify-center items-center leading-tight text-black overflow-hidden">
-    //     {children}
-    //   </div>
-    // </div>
   );
 }
