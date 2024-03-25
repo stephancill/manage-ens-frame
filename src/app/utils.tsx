@@ -207,12 +207,15 @@ export async function calculateEnsRenewalAuto({
     value,
   });
 
-  const autoChainId = chainBalances[0].chain.id.toString();
-  const fundsChainId = parseInt(autoChainId ?? base.id.toString());
+  const autoChainId = chainBalances[0]?.chain.id;
+
+  if (!autoChainId) {
+    throw new Error("No chain found with balance");
+  }
 
   return {
     tx,
-    fundsChainId,
+    fundsChainId: autoChainId,
   };
 }
 
