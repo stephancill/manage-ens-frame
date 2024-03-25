@@ -1,10 +1,9 @@
 import { Button } from "frames.js/next";
-import { TESTNET_ENABLED, mainnetWithEns } from "../../client";
 import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { Heading } from "../../components/heading";
 import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
-import { imageUrl } from "../../utils";
+import { handleManageImpl } from "../manage/route";
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -13,6 +12,13 @@ function truncateAddress(address: string) {
 export const POST = frames(async (ctx) => {
   if (!ctx.message) {
     throw new Error("No message");
+  }
+
+  if (ctx.message.inputText) {
+    return handleManageImpl({
+      ctx,
+      searchParams: { ...ctx.searchParams, name: ctx.message.inputText },
+    });
   }
 
   const addresses = ctx.message.requesterVerifiedAddresses;
@@ -30,8 +36,8 @@ export const POST = frames(async (ctx) => {
     return {
       image: <div>No addresses to check</div>,
       buttons: [
-        <Button action="post" target="/check-names">
-          Check names
+        <Button action="post" target="/">
+          ← Back
         </Button>,
       ],
     };
@@ -61,7 +67,7 @@ export const POST = frames(async (ctx) => {
         action="post"
         target={{ pathname: "/manage", query: { name: e.profile?.ens } }}
       >
-        {e.profile!.ens!.toString()}
+        {e.profile!.ens}
       </Button>
     )) as any,
   };

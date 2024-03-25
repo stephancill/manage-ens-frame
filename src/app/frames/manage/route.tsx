@@ -5,7 +5,9 @@ import { frames } from "../frames";
 import { Heading } from "../../components/heading";
 import { formatExpiration, imageUrl } from "../../utils";
 
-export const POST = frames(async (ctx) => {
+export const handleManageImpl = async (
+  ctx: Parameters<Parameters<typeof frames>[0]>[0]
+) => {
   const name = ctx.searchParams["name"] as string;
   const profile = await getEnsProfile(name);
 
@@ -39,6 +41,10 @@ export const POST = frames(async (ctx) => {
       >
         Renew
       </Button>,
-    ],
+    ] as [any, any],
   };
+};
+
+export const POST = frames(async (ctx) => {
+  return handleManageImpl(ctx);
 });
