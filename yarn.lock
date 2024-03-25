@@ -1169,7 +1169,7 @@ __metadata:
     "@types/react-dom": "npm:^18"
     "@vercel/kv": "npm:^1.0.1"
     autoprefixer: "npm:^10.0.1"
-    frames.js: "npm:^0.9.4"
+    frames.js: "npm:^0.9.6"
     next: "npm:14.1.4"
     postcss: "npm:^8"
     react: "npm:^18"
@@ -1307,9 +1307,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"frames.js@npm:^0.9.4":
-  version: 0.9.5
-  resolution: "frames.js@npm:0.9.5"
+"frames.js@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "frames.js@npm:0.9.6"
   dependencies:
     "@farcaster/core": "npm:^0.14.7"
     "@vercel/og": "npm:^0.6.2"
@@ -1321,7 +1321,7 @@ __metadata:
     next: ^14.1.0
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: 10c0/22ce6dd2217f938a53891cfac7226b6466d2c5b023e8fbbdb5745644018b219dd2b55895d20c58fc4241aadec63b782e02c24092c6c57a8774d705cc4776b39d
+  checksum: 10c0/427ac3045de2ff61cec571c6b01b29212c1e76a201f9a633e39b340d3dcf0f71a7dcb15f0fa07519af0dcfb433d388a14e78a94f52068e5c66bd8e9db706a0f3
   languageName: node
   linkType: hard
 
@@ -2849,7 +2849,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.7.8, viem@npm:^2.8.18":
+"viem@npm:^2.7.8":
+  version: 2.9.0
+  resolution: "viem@npm:2.9.0"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.0"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@scure/bip32": "npm:1.3.2"
+    "@scure/bip39": "npm:1.2.1"
+    abitype: "npm:1.0.0"
+    isows: "npm:1.0.3"
+    ws: "npm:8.13.0"
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/7263cff9f97cccd9d9ed5bb6eb0b8926999b9029e09ba9d4b9fe3d6413cc4bfe3cddce478ef63d78190c2d6855fa7581af7769694b6e08fe4b881e3d4dac98a4
+  languageName: node
+  linkType: hard
+
+"viem@npm:^2.8.18":
   version: 2.8.18
   resolution: "viem@npm:2.8.18"
   dependencies:

@@ -1,6 +1,8 @@
 import { Button } from "frames.js/next";
 import { frames } from "./frames";
 import { Heading } from "../components/heading";
+import { serializeJsx } from "../renderImage";
+import { imageUrl } from "../utils";
 
 const handler = frames(async () => {
   return {

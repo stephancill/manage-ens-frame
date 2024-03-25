@@ -14,6 +14,8 @@ import {
 } from "viem/chains";
 import { getPrice } from "@ensdomains/ensjs/public";
 import { makeRenewTxData } from "./ens/makeRenewTxData";
+import { serializeJsx } from "./renderImage";
+import { Scaffold } from "./components/scaffold";
 
 export function numberWithCommas(x: string | number) {
   var parts = x.toString().split(".");
@@ -134,7 +136,13 @@ export async function getBalancesOnChains({
 }
 
 export async function createRelayCall(data: CallBody) {
-  console.log(`creating relay call with params`, data);
+  console.log(`fetch ${`${reservoirClient.baseApiUrl}/execute/call`}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
   const relayResponse = await fetch(
     `${reservoirClient.baseApiUrl}/execute/call`,
@@ -146,6 +154,7 @@ export async function createRelayCall(data: CallBody) {
       body: JSON.stringify(data),
     }
   );
+
   if (relayResponse.status !== 200) {
     const data = await relayResponse.json();
     console.error(data);
@@ -205,4 +214,13 @@ export async function calculateEnsRenewalAuto({
     tx,
     fundsChainId,
   };
+}
+
+export function imageUrl(image: JSX.Element) {
+  const imageJson = JSON.stringify(serializeJsx(<Scaffold>{image}</Scaffold>));
+  const imageUrl = `${new URL(
+    "/images",
+    process.env.APP_URL
+  ).toString()}?${new URLSearchParams({ jsx: imageJson }).toString()}`;
+  return imageUrl;
 }

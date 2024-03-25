@@ -3,7 +3,7 @@ import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
 import { Heading } from "../../components/heading";
-import { formatExpiration } from "../../utils";
+import { formatExpiration, imageUrl } from "../../utils";
 
 export const POST = frames(async (ctx) => {
   const name = ctx.searchParams["name"] as string;

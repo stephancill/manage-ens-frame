@@ -6,7 +6,12 @@ import { TESTNET_ENABLED, mainnetWithEns, publicClient } from "../../client";
 import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { Heading } from "../../components/heading";
 import { makeRenewTxData } from "../../ens/makeRenewTxData";
-import { createRelayCall, getEthUsdPrice, numberWithCommas } from "../../utils";
+import {
+  createRelayCall,
+  getEthUsdPrice,
+  imageUrl,
+  numberWithCommas,
+} from "../../utils";
 import { frames } from "../frames";
 
 function formatEtherDisplay(eth: bigint) {
@@ -141,7 +146,7 @@ export const POST = frames(async (ctx) => {
       <Button
         action="tx"
         target={{ pathname: "/renew-tx", query: { name } }}
-        post_url={`/renew-tx-submitted?name=${name}`}
+        post_url={{ pathname: "/renew-tx-submitted", query: { name } }}
       >
         Pay (auto)
       </Button>,

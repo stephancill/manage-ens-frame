@@ -4,6 +4,7 @@ import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { Heading } from "../../components/heading";
 import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
+import { imageUrl } from "../../utils";
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;

@@ -1,6 +1,7 @@
 import { addEnsContracts } from "@ensdomains/ensjs";
 import {
   MAINNET_RELAY_API,
+  TESTNET_RELAY_API,
   convertViemChainToRelayChain,
   createClient,
 } from "@reservoir0x/relay-sdk";
@@ -25,7 +26,7 @@ export const publicClient = createPublicClient({
 });
 
 export const reservoirClient = createClient({
-  baseApiUrl: MAINNET_RELAY_API,
+  baseApiUrl: TESTNET_ENABLED ? TESTNET_RELAY_API : MAINNET_RELAY_API,
   source: "stephancill",
   chains: [
     TESTNET_ENABLED
