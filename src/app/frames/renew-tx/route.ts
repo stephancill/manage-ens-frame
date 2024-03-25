@@ -9,7 +9,7 @@ import {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const frameMessage = await getFrameMessage(body);
+  const frameMessage = await getFrameMessage(body, { fetchHubContext: false });
 
   const name = req.nextUrl.searchParams.get("name");
   const years = parseInt(req.nextUrl.searchParams.get("years")!);
