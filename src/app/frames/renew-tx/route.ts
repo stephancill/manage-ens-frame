@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
   const frameMessage = await getFrameMessage(body);
 
   const name = req.nextUrl.searchParams.get("name");
+  const years = parseInt(req.nextUrl.searchParams.get("years")!);
 
   if (!name) {
     throw new Error("No name");
@@ -24,16 +25,10 @@ export async function POST(req: NextRequest) {
   const connectedAddress = frameMessage.connectedAddress;
   const fid = frameMessage.requesterFid?.toString();
 
-  let yearsInput = 1;
-
-  if (frameMessage?.inputText) {
-    yearsInput = parseInt(frameMessage.inputText);
-  }
-
   const { tx, fundsChainId } = await calculateEnsRenewalAutoFund({
     connectedAddress: connectedAddress!,
     name,
-    renewalYears: yearsInput,
+    renewalYears: years,
   });
 
   // Initiate cross-chain execution

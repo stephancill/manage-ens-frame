@@ -4,21 +4,24 @@ import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
 import { Heading } from "../../components/heading";
 import { formatExpiration, imageUrl } from "../../utils";
+import { NextRequest } from "next/server";
 
 export const handleManageImpl = async (
   ctx: Parameters<Parameters<typeof frames>[0]>[0]
 ) => {
-  const name = ctx.searchParams["name"] as string;
+  const name = ctx.searchParams.name;
   const profile = await getEnsProfile(name);
 
   if (!profile) {
     return {
-      image: <div tw="flex">Failed to fetch ENS profile for {name}</div>,
+      image: imageUrl(
+        <div tw="flex">Failed to fetch ENS profile for {name}</div>
+      ),
     };
   }
 
   return {
-    image: (
+    image: imageUrl(
       <div tw="flex flex-col">
         <Heading>Manage ENS</Heading>
         <div tw="flex -ml-2 items-center">
@@ -45,6 +48,6 @@ export const handleManageImpl = async (
   };
 };
 
-export const POST = frames(async (ctx) => {
-  return handleManageImpl(ctx);
-});
+export const POST = async function (req: NextRequest) {
+  return frames(handleManageImpl)(req);
+};

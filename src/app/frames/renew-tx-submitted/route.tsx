@@ -3,6 +3,7 @@ import { frames } from "../frames";
 import { kv } from "@vercel/kv";
 import { reservoirClient } from "../../client";
 import { Button } from "frames.js/next";
+import { imageUrl } from "../../utils";
 
 type RelayStatusResponse =
   paths["/intents/status"]["get"]["responses"]["200"]["content"]["application/json"];
@@ -68,7 +69,7 @@ export const handler = frames(async (ctx) => {
 
     if (checkResult.status === "success") {
       return {
-        image: <div tw="flex">Transaction successful!</div>,
+        image: imageUrl(<div tw="flex">Transaction successful!</div>),
         buttons: [
           <Button
             action="post"
@@ -102,10 +103,16 @@ export const handler = frames(async (ctx) => {
           ) : null,
         ],
       };
-    } else if (checkResult.status === "pending") {
+    } else if (
+      checkResult.status === "pending" ||
+      checkResult.status === "unknown"
+    ) {
       return {
-        image: (
-          <div tw="flex">Transaction in progress ({checkResult.details})</div>
+        image: imageUrl(
+          <div tw="flex">
+            Transaction in progress...{" "}
+            {checkResult.details ? `(${checkResult.details})` : ""}
+          </div>
         ),
         buttons: [
           <Button
@@ -113,6 +120,12 @@ export const handler = frames(async (ctx) => {
             target={{ pathname: "/manage", query: { name } }}
           >
             ← Back to Manage
+          </Button>,
+          <Button
+            action="post"
+            target={{ pathname: "/renew-tx-submitted", query: { name } }}
+          >
+            ⟲ Check again
           </Button>,
           checkResult.inTxHashes?.[0] ? (
             <Button
@@ -126,18 +139,12 @@ export const handler = frames(async (ctx) => {
               In tx ↗︎
             </Button>
           ) : null,
-          <Button
-            action="post"
-            target={{ pathname: "/renew-tx-submitted", query: { name } }}
-          >
-            ⟲ Check again
-          </Button>,
         ],
       };
     }
 
     return {
-      image: <div tw="flex">Unknown transaction state</div>,
+      image: imageUrl(<div tw="flex">Unknown transaction state</div>),
       buttons: [
         <Button
           action="post"
@@ -149,7 +156,7 @@ export const handler = frames(async (ctx) => {
     };
   } catch (error) {
     return {
-      image: (
+      image: imageUrl(
         <div tw="flex">
           {typeof error === "object" && error && "message" in error
             ? (error.message as string)

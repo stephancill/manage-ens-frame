@@ -4,6 +4,7 @@ import { Heading } from "../../components/heading";
 import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
 import { handleManageImpl } from "../manage/route";
+import { imageUrl } from "../../utils";
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -34,7 +35,7 @@ export const POST = frames(async (ctx) => {
 
   if (ensProfiles.length === 0) {
     return {
-      image: <div>No addresses to check</div>,
+      image: imageUrl(<div>No addresses to check</div>),
       buttons: [
         <Button action="post" target="/">
           ← Back
@@ -44,7 +45,7 @@ export const POST = frames(async (ctx) => {
   }
 
   return {
-    image: (
+    image: imageUrl(
       <div tw="flex flex-col">
         <Heading>Your Names</Heading>
         <div tw="flex flex-col">

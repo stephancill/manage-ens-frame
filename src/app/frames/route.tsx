@@ -1,16 +1,17 @@
 import { Button } from "frames.js/next";
-import { frames } from "./frames";
 import { Heading } from "../components/heading";
-import { serializeJsx } from "../renderImage";
 import { imageUrl } from "../utils";
+import { frames } from "./frames";
+import { TESTNET_ENABLED } from "../client";
 
 const handler = frames(async () => {
   return {
-    image: (
+    image: imageUrl(
       <div tw="flex flex-col">
-        {" "}
         <Heading>ENS Tools</Heading>
-        <div>Manage your ENS names</div>
+        <div tw="flex">
+          Manage your ENS names {TESTNET_ENABLED ? "(on Sepolia)" : ""}
+        </div>
       </div>
     ),
     textInput: "Search for an ENS name",

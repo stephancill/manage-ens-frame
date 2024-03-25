@@ -109,7 +109,7 @@ export const POST = frames(async (ctx) => {
   const totalUsdFormatted = formatUsdDisplay(totalUsd);
 
   return {
-    image: (
+    image: imageUrl(
       <div tw="flex flex-col">
         <Heading>Renew</Heading>
         <div tw="flex items-center">
@@ -134,7 +134,7 @@ export const POST = frames(async (ctx) => {
             </div>
           </div>
         </div>
-        <div tw="mt-[50px] text-[24px] text-gray-500">
+        <div tw="mt-[50px] text-[24px] text-gray-500 flex">
           *Approximate fees for execution from Base via relay.link
         </div>
       </div>
@@ -145,7 +145,7 @@ export const POST = frames(async (ctx) => {
       </Button>,
       <Button
         action="tx"
-        target={{ pathname: "/renew-tx", query: { name } }}
+        target={{ pathname: "/renew-tx", query: { name, years: yearsInput } }}
         post_url={{ pathname: "/renew-tx-submitted", query: { name } }}
       >
         Pay (auto)
