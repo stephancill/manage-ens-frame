@@ -8,7 +8,9 @@ import { formatExpiration, imageUrl } from "../../utils";
 export const handleManageImpl = async (
   ctx: Parameters<Parameters<typeof frames>[0]>[0]
 ) => {
-  const name = ctx.searchParams.name;
+  const nameRaw = ctx.searchParams.name as string | undefined;
+  const name = nameRaw?.endsWith(".eth") ? nameRaw : `${nameRaw}.eth`;
+
   const profile = await getEnsProfile(name);
 
   if (!profile) {
