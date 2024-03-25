@@ -39,8 +39,6 @@ export const handler = frames(async (ctx) => {
     // Look up user's request in kv
     const steps = await kv.get<Execute["steps"]>(fid);
 
-    console.log({ steps, stepsString: JSON.stringify(steps) });
-
     const check = steps?.[0].items?.[0].check;
 
     if (!check?.endpoint) {
@@ -65,6 +63,8 @@ export const handler = frames(async (ctx) => {
 
     // Report progress
     const checkResult = (await relayResponse.json()) as RelayStatusResponse;
+
+    console.log(JSON.stringify(checkResult));
 
     if (checkResult.status === "success") {
       return {
@@ -102,16 +102,50 @@ export const handler = frames(async (ctx) => {
           ) : null,
         ],
       };
+    } else if (checkResult.status === "pending") {
+      return {
+        image: (
+          <div tw="flex">Transaction in progress ({checkResult.details})</div>
+        ),
+        buttons: [
+          <Button
+            action="post"
+            target={{ pathname: "/manage", query: { name } }}
+          >
+            ← Back to Manage
+          </Button>,
+          checkResult.inTxHashes?.[0] ? (
+            <Button
+              action="post"
+              target={getBlockExplorerTarget({
+                txHash: checkResult.inTxHashes[0],
+                fid,
+                name,
+              })}
+            >
+              In tx ↗︎
+            </Button>
+          ) : null,
+          <Button
+            action="post"
+            target={{ pathname: "/renew-tx-submitted", query: { name } }}
+          >
+            ⟲ Check again
+          </Button>,
+        ],
+      };
     }
 
     return {
-      image: (
-        <div tw="flex">
-          {checkResult.status === "success"
-            ? "Transaction successful"
-            : "Transaction failed"}
-        </div>
-      ),
+      image: <div tw="flex">Unknown transaction state</div>,
+      buttons: [
+        <Button
+          action="post"
+          target={{ pathname: "/renew-tx-submitted", query: { name } }}
+        >
+          ⟲ Check again
+        </Button>,
+      ],
     };
   } catch (error) {
     return {
