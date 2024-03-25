@@ -13,9 +13,18 @@ export const handleManageImpl = async (
 
   if (!profile) {
     return {
-      image: imageUrl(
-        <div tw="flex">Failed to fetch ENS profile for {name}</div>
-      ),
+      image: imageUrl(<div tw="flex">{name} is available to register</div>),
+      buttons: [
+        <Button action="post" target="/">
+          ← Back
+        </Button>,
+        <Button
+          action="link"
+          target={`https://app.ens.domains/${name}/register`}
+        >
+          Register
+        </Button>,
+      ] as [any, any],
     };
   }
 
