@@ -13,7 +13,13 @@ export default async function Page() {
       </div>
     </Scaffold>
   );
-  const elementRendered = await renderImage(element);
+  let elementRendered: string | null = null;
+
+  try {
+    elementRendered = await renderImage(element);
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") throw error;
+  }
 
   const serialized = serializeJsx(element);
   const deserialized = deserializeJsx(serialized);
@@ -27,9 +33,11 @@ export default async function Page() {
   return (
     <div className="w-1/2 h-full">
       <div className="flex gap-10">
-        <div>
-          <img src={elementRendered} className={block}></img>
-        </div>
+        {elementRendered && (
+          <div>
+            <img src={elementRendered} className={block}></img>
+          </div>
+        )}
         <div>
           <img src={deserializedRendered} className={block}></img>
         </div>

@@ -1,8 +1,9 @@
 import { fetchMetadata } from "frames.js/next";
+import { vercelURL } from "./utils";
 
 export async function generateMetadata() {
   const frameMetadata = await fetchMetadata(
-    new URL("/frames", process.env.APP_URL!)
+    new URL("/frames", (vercelURL() || process.env.APP_URL)!)
   );
 
   return {

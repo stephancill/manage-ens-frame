@@ -24,7 +24,7 @@ function getBlockExplorerTarget({
   };
 }
 
-export const handler = frames(async (ctx) => {
+const handler = frames(async (ctx) => {
   try {
     let fid = ctx.searchParams.fid;
     const name = ctx.searchParams.name;

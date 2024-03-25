@@ -220,7 +220,13 @@ export function imageUrl(image: JSX.Element) {
   const imageJson = JSON.stringify(serializeJsx(<Scaffold>{image}</Scaffold>));
   const imageUrl = `${new URL(
     "/images",
-    process.env.APP_URL
+    vercelURL() || process.env.APP_URL
   ).toString()}?${new URLSearchParams({ jsx: imageJson }).toString()}`;
   return imageUrl;
+}
+
+export function vercelURL() {
+  return process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : undefined;
 }

@@ -3,7 +3,7 @@ import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { Heading } from "../../components/heading";
 import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
-import { handleManageImpl } from "../manage/route";
+import { handleManageImpl } from "../manage/handleManageImpl";
 import { imageUrl } from "../../utils";
 
 function truncateAddress(address: string) {
