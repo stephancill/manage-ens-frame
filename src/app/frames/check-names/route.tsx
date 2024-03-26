@@ -4,7 +4,7 @@ import { Heading } from "../../components/heading";
 import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
 import { handleManageImpl } from "../manage/handleManageImpl";
-import { imageUrl } from "../../utils";
+import { formatExpiration, imageUrl } from "../../utils";
 import { farcasterHubContext } from "frames.js/middleware";
 
 function truncateAddress(address: string) {
@@ -25,22 +25,33 @@ export const POST = frames(
     }
 
     const addresses = ctx.message.requesterVerifiedAddresses;
+    const username = ctx.message.requesterUserData?.username;
 
-    const ensResults = await Promise.all(
-      addresses.map(async (address) => ({
+    const [...ensResults] = await Promise.all([
+      username ? { profile: await getEnsProfile(username) } : {},
+      ...addresses.map(async (address) => ({
         address,
         profile: await getEnsProfile(address),
-      }))
-    );
+      })),
+    ]);
 
-    const ensProfiles = ensResults.filter((e) => Boolean(e.profile?.ens));
+    // Filter out and deduplicate profiles
+    const ensProfiles = ensResults
+      .filter((e) => Boolean(e.profile?.ens))
+      .filter(
+        (e, i, a) => a.findIndex((x) => x.profile?.ens === e.profile?.ens) === i
+      );
 
     if (ensProfiles.length === 0) {
       return {
         image: imageUrl(<div>No addresses to check</div>),
+        textInput: "Search for an ENS name",
         buttons: [
           <Button action="post" target="/">
             ← Back
+          </Button>,
+          <Button action="post" target="/check-names">
+            Search
           </Button>,
         ],
       };
@@ -52,14 +63,25 @@ export const POST = frames(
           <Heading>Your Names</Heading>
           <div tw="flex flex-col">
             {ensProfiles.map((e) => (
-              <div tw="flex flex-row items-center" key={e.address}>
-                <div tw="mr-1 -ml-2 flex">
-                  <NameWithAvatar
-                    avatar={e.profile!.avatar_url}
-                    name={e.profile!.ens}
-                  />
+              <div tw="flex flex-col">
+                <div tw="flex flex-row items-center" key={e.profile?.address}>
+                  <div tw="mr-1 -ml-2 flex items-center">
+                    <NameWithAvatar
+                      avatar={e.profile!.avatar_url}
+                      name={e.profile!.ens}
+                    />
+                  </div>
+                  {e.profile?.address && (
+                    <span tw="flex">
+                      ({truncateAddress(e.profile.address)})
+                    </span>
+                  )}
                 </div>
-                ({truncateAddress(e.address)})
+                {e.profile?.expiry && (
+                  <div tw="flex text-gray-500">
+                    expires in {formatExpiration(e.profile.expiry)}
+                  </div>
+                )}
               </div>
             ))}
           </div>
