@@ -8,8 +8,8 @@ export function NameWithAvatar({
   return (
     <div tw="flex items-center mx-2">
       {avatar && (
-        <div tw="flex rounded-full overflow-hidden mr-2">
-          <img width={60} height={60} src={avatar} />
+        <div tw="flex rounded-full overflow-hidden mr-2 border-gray-200 border bg-gray-200">
+          <img className="flex" width={60} height={60} src={avatar} />
         </div>
       )}
       {name}

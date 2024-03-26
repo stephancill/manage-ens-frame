@@ -47,11 +47,32 @@ export function serializeJsx(children: ReactNode): SerializedNode[] {
       if ("props" in child) {
         let serialized = Object.assign({}, child);
         if (child.props.children) {
+          const children = serializeJsx(child.props.children);
+
+          if (
+            process.env.NODE_ENV === "development" &&
+            children.length > 0 &&
+            !(
+              (serialized.props.style?.display &&
+                serialized.props.style.display === "flex") ||
+              (serialized.props.tw && serialized.props.tw.includes("flex"))
+            )
+          ) {
+            console.warn(
+              "You are using a flex container without setting display: flex in the style prop",
+              JSON.stringify(child.props.children, null, 2)
+            );
+          }
+
           serialized = {
             ...serialized,
             props: {
               ...serialized.props,
-              children: serializeJsx(child.props.children),
+              style: {
+                ...serialized.props.style,
+                display: children.length > 0 ? "flex" : undefined,
+              },
+              children,
             },
           };
         }
@@ -63,6 +84,10 @@ export function serializeJsx(children: ReactNode): SerializedNode[] {
             ...serialized,
             props: {
               ...serialized.props,
+              style: {
+                ...serialized.props.style,
+                display: "flex",
+              },
               children: serializeJsx(evaluatedChild),
             },
           };
