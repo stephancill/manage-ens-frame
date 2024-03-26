@@ -1,14 +1,9 @@
 import { createEnsPublicClient } from "@ensdomains/ensjs";
-import { TESTNET_ENABLED, mainnetWithEns, publicClient } from "../client";
 import { http, isAddress } from "viem";
-import {
-  getAddressRecord,
-  getTextRecord,
-  getExpiry,
-} from "@ensdomains/ensjs/public";
+import { TESTNET_ENABLED, mainnetWithEns, publicClient } from "../client";
 
 interface ENSProfile {
-  address: string;
+  address?: string;
   avatar?: string;
   avatar_url?: string;
   description?: string;
@@ -80,12 +75,14 @@ async function getEnsProfileOnchain(
       ensClient.getExpiry({ name: ensNameOrAddress }),
     ]);
 
-    if (!address) {
+    ensClient.getAddressRecord({ name: ensNameOrAddress });
+
+    if (!expiry) {
       return null;
     }
 
     return {
-      address: address,
+      address: address || undefined,
       ens: ensNameOrAddress,
       expiry: expiry?.expiry!.date!,
     };
