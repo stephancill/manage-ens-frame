@@ -5,11 +5,20 @@ import { frames } from "../frames";
 import { Heading } from "../../components/heading";
 import { formatExpiration, imageUrl } from "../../utils";
 
+function getEthTld(name: string) {
+  const segments = name.split(".");
+
+  // Return last 2 segments joined by a dot
+  return segments.slice(-2).join(".");
+}
+
 export const handleManageImpl = async (
   ctx: Parameters<Parameters<typeof frames>[0]>[0]
 ) => {
   const nameRaw = ctx.searchParams.name as string | undefined;
-  const name = nameRaw?.endsWith(".eth") ? nameRaw : `${nameRaw}.eth`;
+  const name = getEthTld(
+    nameRaw?.endsWith(".eth") ? nameRaw : `${nameRaw}.eth`
+  );
 
   const profile = await getEnsProfile(name);
 
