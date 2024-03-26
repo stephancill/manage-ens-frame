@@ -1,0 +1,39 @@
+diff --git a/dist/chunk-CMKMOD2M.js b/dist/chunk-CMKMOD2M.js
+index 5b977303c80ac2ed937f0a109aadd304fff32f17..95380ee354febe50b28f2c2366bf605bdedafe3a 100644
+--- a/dist/chunk-CMKMOD2M.js
++++ b/dist/chunk-CMKMOD2M.js
+@@ -1,7 +1,7 @@
+ // src/next/getCurrentUrl.ts
+ function getCurrentUrl(req) {
+   const scheme = process.env.NODE_ENV === "production" ? "https://" : "http://";
+-  const appUrl = process.env.VERCEL_URL || process.env.APP_URL;
++  const appUrl = process.env.APP_URL || process.env.VERCEL_URL;
+   const host = req.headers?.host;
+   const pathname = req.url?.startsWith("/") ? req.url : req.url ? new URL(req.url).pathname + new URL(req.url).search : "";
+   const parsedAppUrl = appUrl ? appUrl.startsWith("http://") || appUrl.startsWith("https://") ? new URL(pathname, appUrl) : new URL(pathname, scheme + appUrl) : void 0;
+diff --git a/dist/next/getCurrentUrl.cjs b/dist/next/getCurrentUrl.cjs
+index 23bea13e80cbdf5d575343bb653cbd9beae9056b..68edd0fd0d90acfd22872728b3ba402e5b7038a3 100644
+--- a/dist/next/getCurrentUrl.cjs
++++ b/dist/next/getCurrentUrl.cjs
+@@ -25,7 +25,7 @@ __export(getCurrentUrl_exports, {
+ module.exports = __toCommonJS(getCurrentUrl_exports);
+ function getCurrentUrl(req) {
+   const scheme = process.env.NODE_ENV === "production" ? "https://" : "http://";
+-  const appUrl = process.env.VERCEL_URL || process.env.APP_URL;
++  const appUrl = process.env.APP_URL || process.env.VERCEL_URL;
+   const host = req.headers?.host;
+   const pathname = req.url?.startsWith("/") ? req.url : req.url ? new URL(req.url).pathname + new URL(req.url).search : "";
+   const parsedAppUrl = appUrl ? appUrl.startsWith("http://") || appUrl.startsWith("https://") ? new URL(pathname, appUrl) : new URL(pathname, scheme + appUrl) : void 0;
+diff --git a/src/next/getCurrentUrl.ts b/src/next/getCurrentUrl.ts
+index e979da50e193b89009e84a6ba393252e34a30657..fcf35c982cebe2525ee9d794d13d06e8cf94f496 100644
+--- a/src/next/getCurrentUrl.ts
++++ b/src/next/getCurrentUrl.ts
+@@ -6,7 +6,7 @@ export function getCurrentUrl(
+   req: Request | NextRequest | NextApiRequest | IncomingMessage
+ ): URL | undefined {
+   const scheme = process.env.NODE_ENV === "production" ? "https://" : "http://";
+-  const appUrl = process.env.VERCEL_URL || process.env.APP_URL;
++  const appUrl = process.env.APP_URL || process.env.VERCEL_URL;
+   const host: string | undefined = (req.headers as any)?.host;
+ 
+   const pathname = req.url?.startsWith("/")
