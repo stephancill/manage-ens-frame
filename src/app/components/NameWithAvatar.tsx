@@ -1,3 +1,5 @@
+import { normalise } from "@ensdomains/ensjs/utils";
+
 export function NameWithAvatar({
   name,
   avatar,
@@ -12,7 +14,7 @@ export function NameWithAvatar({
           <img className="flex" width={60} height={60} src={avatar} />
         </div>
       )}
-      {name}
+      {name && <span className="flex">{normalise(name)}</span>}
     </div>
   );
 }

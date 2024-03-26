@@ -1,6 +1,7 @@
 import { createEnsPublicClient } from "@ensdomains/ensjs";
 import { http, isAddress } from "viem";
 import { TESTNET_ENABLED, mainnetWithEns, publicClient } from "../client";
+import { normalise } from "@ensdomains/ensjs/utils";
 
 interface ENSProfile {
   address?: string;
@@ -68,14 +69,16 @@ async function getEnsProfileOnchain(
       expiry: expiry?.expiry!.date!,
     };
   } else {
+    const ensName = normalise(ensNameOrAddress);
+
     const [address, expiry] = await Promise.all([
       publicClient.getEnsAddress({
-        name: ensNameOrAddress,
+        name: ensName,
       }),
-      ensClient.getExpiry({ name: ensNameOrAddress }),
+      ensClient.getExpiry({ name: ensName }),
     ]);
 
-    ensClient.getAddressRecord({ name: ensNameOrAddress });
+    ensClient.getAddressRecord({ name: ensName });
 
     if (!expiry) {
       return null;

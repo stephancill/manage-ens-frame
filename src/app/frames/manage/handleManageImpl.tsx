@@ -4,6 +4,7 @@ import { getEnsProfile } from "../../ens/getEnsProfile";
 import { frames } from "../frames";
 import { Heading } from "../../components/heading";
 import { formatExpiration, imageUrl } from "../../utils";
+import { normalise } from "@ensdomains/ensjs/utils";
 
 function getEthTld(name: string) {
   const segments = name.split(".");
@@ -16,9 +17,20 @@ export const handleManageImpl = async (
   ctx: Parameters<Parameters<typeof frames>[0]>[0]
 ) => {
   const nameRaw = ctx.searchParams.name as string | undefined;
-  const name = getEthTld(
-    nameRaw?.endsWith(".eth") ? nameRaw : `${nameRaw}.eth`
-  );
+  let name = getEthTld(nameRaw?.endsWith(".eth") ? nameRaw : `${nameRaw}.eth`);
+
+  try {
+    name = normalise(name);
+  } catch (error) {
+    return {
+      image: imageUrl(<div tw="flex">Invalid ENS name</div>),
+      buttons: [
+        <Button action="post" target="/">
+          ← Back
+        </Button>,
+      ] as [any],
+    };
+  }
 
   const profile = await getEnsProfile(name);
 
@@ -44,8 +56,8 @@ export const handleManageImpl = async (
       <div tw="flex flex-col">
         <Heading>Manage ENS</Heading>
         <div tw="flex -ml-2 items-center">
-          <NameWithAvatar avatar={profile.avatar_url} name={name} /> (expires in{" "}
-          {formatExpiration(profile.expiry)})
+          <NameWithAvatar avatar={profile.avatar_url} name={profile.ens} />{" "}
+          (expires in {formatExpiration(profile.expiry)})
         </div>
       </div>
     ),
@@ -58,7 +70,7 @@ export const handleManageImpl = async (
         action="post"
         target={{
           pathname: "/renew",
-          query: { name, avatar: profile.avatar_url },
+          query: { name: profile.ens, avatar: profile.avatar_url },
         }}
       >
         Renew
