@@ -187,16 +187,7 @@ export async function calculateEnsRenewalAuto({
       // https://docs.relay.link/resources/supported-chains#supported-chains
       chains: TESTNET_ENABLED
         ? [baseSepolia]
-        : [
-            mainnet,
-            zora,
-            base,
-            arbitrum,
-            arbitrumNova,
-            optimism,
-            linea,
-            zkSync,
-          ],
+        : [zora, base, arbitrum, arbitrumNova, optimism, linea, zkSync],
     }),
   ]);
 
