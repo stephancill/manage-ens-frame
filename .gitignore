@@ -43,6 +43,5 @@ next-env.d.ts
 .pnp.*
 .yarnrc
 .yarnrc.yml
-package-lock.json
 
 .env
