@@ -1,5 +1,5 @@
 import { ImageResponse } from "@vercel/og";
-import React, { JSXElementConstructor, ReactElement, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 type SerializedNode =
   | {
@@ -49,27 +49,13 @@ export function serializeJsx(children: ReactNode): SerializedNode[] {
         if (child.props.children) {
           const children = serializeJsx(child.props.children);
 
-          if (
-            process.env.NODE_ENV === "development" &&
-            children.length > 0 &&
-            !(
-              (serialized.props.style?.display &&
-                serialized.props.style.display === "flex") ||
-              (serialized.props.tw && serialized.props.tw.includes("flex"))
-            )
-          ) {
-            console.warn(
-              "You are using a flex container without setting display: flex in the style prop",
-              JSON.stringify(child.props.children, null, 2)
-            );
-          }
-
           serialized = {
             ...serialized,
             props: {
               ...serialized.props,
               style: {
                 ...serialized.props.style,
+                // satori requires flex display for multiple children
                 display: children.length > 0 ? "flex" : undefined,
               },
               children,
