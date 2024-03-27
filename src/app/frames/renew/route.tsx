@@ -6,12 +6,7 @@ import { TESTNET_ENABLED, mainnetWithEns, publicClient } from "../../client";
 import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { Heading } from "../../components/heading";
 import { makeRenewTxData } from "../../ens/makeRenewTxData";
-import {
-  createRelayCall,
-  getEthUsdPrice,
-  imageUrl,
-  numberWithCommas,
-} from "../../utils";
+import { createRelayCall, getEthUsdPrice, numberWithCommas } from "../../utils";
 import { frames } from "../frames";
 
 function formatEtherDisplay(eth: bigint) {
@@ -109,7 +104,7 @@ export const POST = frames(async (ctx) => {
   const totalUsdFormatted = formatUsdDisplay(totalUsd);
 
   return {
-    image: imageUrl(
+    image: (
       <div tw="flex w-2/3 flex-col">
         <Heading>Renew</Heading>
         <div tw="flex items-center">

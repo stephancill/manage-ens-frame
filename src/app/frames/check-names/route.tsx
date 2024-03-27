@@ -1,11 +1,11 @@
+import { farcasterHubContext } from "frames.js/middleware";
 import { Button } from "frames.js/next";
 import { NameWithAvatar } from "../../components/NameWithAvatar";
 import { Heading } from "../../components/heading";
 import { getEnsProfile } from "../../ens/getEnsProfile";
+import { formatExpiration } from "../../utils";
 import { frames } from "../frames";
 import { handleManageImpl } from "../manage/handleManageImpl";
-import { formatExpiration, imageUrl } from "../../utils";
-import { farcasterHubContext } from "frames.js/middleware";
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -44,7 +44,7 @@ export const POST = frames(
 
     if (ensProfiles.length === 0) {
       return {
-        image: imageUrl(<div>No addresses to check</div>),
+        image: <div>No addresses to check</div>,
         textInput: "Search for an ENS name",
         buttons: [
           <Button action="post" target="/">
@@ -58,7 +58,7 @@ export const POST = frames(
     }
 
     return {
-      image: imageUrl(
+      image: (
         <div tw="flex flex-col">
           <Heading>Your Names</Heading>
           <div tw="flex flex-col">

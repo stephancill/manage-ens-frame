@@ -1,9 +1,8 @@
 import { Execute, paths } from "@reservoir0x/relay-sdk";
-import { frames } from "../frames";
 import { kv } from "@vercel/kv";
-import { reservoirClient } from "../../client";
 import { Button } from "frames.js/next";
-import { imageUrl } from "../../utils";
+import { reservoirClient } from "../../client";
+import { frames } from "../frames";
 
 type RelayStatusResponse =
   paths["/intents/status"]["get"]["responses"]["200"]["content"]["application/json"];
@@ -69,7 +68,7 @@ const handler = frames(async (ctx) => {
 
     if (checkResult.status === "success") {
       return {
-        image: imageUrl(<div tw="flex">Transaction successful!</div>),
+        image: <div tw="flex">Transaction successful!</div>,
         buttons: [
           <Button
             action="post"
@@ -108,7 +107,7 @@ const handler = frames(async (ctx) => {
       checkResult.status === "unknown"
     ) {
       return {
-        image: imageUrl(
+        image: (
           <div tw="flex">
             Transaction in progress...{" "}
             {checkResult.details ? `(${checkResult.details})` : ""}
@@ -144,7 +143,7 @@ const handler = frames(async (ctx) => {
     }
 
     return {
-      image: imageUrl(<div tw="flex">Unknown transaction state</div>),
+      image: <div tw="flex">Unknown transaction state</div>,
       buttons: [
         <Button
           action="post"
@@ -156,7 +155,7 @@ const handler = frames(async (ctx) => {
     };
   } catch (error) {
     return {
-      image: imageUrl(
+      image: (
         <div tw="flex">
           {typeof error === "object" && error && "message" in error
             ? (error.message as string)

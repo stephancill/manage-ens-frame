@@ -1,12 +1,11 @@
 import { Button } from "frames.js/next";
-import { Heading } from "../components/heading";
-import { imageUrl } from "../utils";
-import { frames } from "./frames";
 import { TESTNET_ENABLED } from "../client";
+import { Heading } from "../components/heading";
+import { frames } from "./frames";
 
 const handler = frames(async () => {
   return {
-    image: imageUrl(
+    image: (
       <div tw="flex flex-col">
         <Heading>ENS Tools</Heading>
         <div tw="flex">
